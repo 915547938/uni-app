@@ -3,7 +3,8 @@
         {
             "path": "pages/main/main",
             "style": {
-                "navigationBarTitleText": "登录模板"
+                "navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true
             }
         }, {
             "path": "pages/login/login",
@@ -21,10 +22,26 @@
                 "navigationBarTitleText": "找回密码"
             }
         }, {
+            "path": "pages/garbage/garbage",
+            "style": {
+                "navigationBarTitleText": "垃圾分类"
+            }
+        }, {
+            "path": "pages/food/food",
+            "style": {
+                "navigationBarTitleText": "美食秀"
+            }
+        }, {
             "path": "pages/user/user",
             "style": {
                 "navigationBarTitleText": "我的"
             }
+        },{
+            "path" : "pages/search/search",
+            "style" : {
+				"navigationBarTitleText": "搜索",
+				"enablePullDownRefresh": true
+			}
         }
     ],
     "tabBar": {
@@ -37,15 +54,15 @@
             "iconPath": "static/img/home.png",
             "selectedIconPath": "static/img/homeHL.png"
         }, {
-            "pagePath": "pages/main/main",
+            "pagePath": "pages/garbage/garbage",
             "text": "垃圾分类",
-            "iconPath": "static/img/home.png",
-            "selectedIconPath": "static/img/homeHL.png"
+            "iconPath": "static/img/ljx.png",
+            "selectedIconPath": "static/img/ljxHL.png"
         },{
-            "pagePath": "pages/main/main",
+            "pagePath": "pages/food/food",
             "text": "美食秀",
-            "iconPath": "static/img/home.png",
-            "selectedIconPath": "static/img/homeHL.png"
+            "iconPath": "static/img/food.png",
+            "selectedIconPath": "static/img/foodHL.png"
         },{
             "pagePath": "pages/user/user",
             "text": "我的",
