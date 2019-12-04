@@ -29,7 +29,23 @@
         }, {
             "path": "pages/food/food",
             "style": {
-                "navigationBarTitleText": "美食秀"
+                "navigationBarTitleText": "美食秀",
+				"enablePullDownRefresh" : true,
+				"app-plus" : {
+				    "bounce" : "none",
+				    "titleNView" : {
+				        "type" : "transparent",
+				        "buttons" : [
+				            {
+				                "background" : "rgba(255,255,255,0.2)",
+				                "color" : "#696969",
+				                "type" : "none",
+				                "fontSrc" : "/static/fonts/iconfont.ttf",
+				                "text" : "\ue608" //小相机
+				            }
+				        ]
+				    }
+				}
             }
         }, {
             "path": "pages/user/user",
@@ -42,6 +58,11 @@
 				"navigationBarTitleText": "搜索",
 				"enablePullDownRefresh": true
 			}
+        }, {
+            "path": "pages/publish/publish",
+            "style": {
+                "navigationBarTitleText": "发布"
+            }
         }
     ],
     "tabBar": {

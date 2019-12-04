@@ -13,14 +13,29 @@ const getUsers = function () {
 
 const addUser = function (userInfo) {
     let users = getUsers();
-    users.push({
+     users.push({
         account: userInfo.account,
         password: userInfo.password
-    });
+    }); 
     uni.setStorageSync(USERS_KEY, JSON.stringify(users));
+}
+
+const setCache = function (key,data){
+	uni.setStorageSync(key,JSON.stringify(data));
+}
+
+const getCache = function (key){
+	let ret = '';
+	ret = uni.getStorageSync(key);
+	if (!ret) {
+	    ret = '';
+	}
+	return JSON.parse(ret);
 }
 
 export default {
     getUsers,
-    addUser
+    addUser,
+	setCache,
+	getCache
 }

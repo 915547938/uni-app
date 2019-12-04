@@ -9,10 +9,10 @@
                 <text class="title">密码：</text>
                 <m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
             </view>
-            <view class="input-row">
+            <!-- <view class="input-row">
                 <text class="title">邮箱：</text>
                 <m-input type="text" clearable v-model="email" placeholder="请输入邮箱"></m-input>
-            </view>
+            </view> -->
         </view>
         <view class="btn-row">
             <button type="primary" class="primary" @tap="register">注册</button>
@@ -55,13 +55,13 @@
                     });
                     return;
                 }
-                if (this.email.length < 3 || !~this.email.indexOf('@')) {
+                /* if (this.email.length < 3 || !~this.email.indexOf('@')) {
                     uni.showToast({
                         icon: 'none',
                         title: '邮箱地址不合法'
                     });
                     return;
-                }
+                } */
 
                 const data = {
                     account: this.account,
@@ -72,8 +72,8 @@
                 uni.showToast({
                     title: '注册成功'
                 });
-                uni.navigateBack({
-                    delta: 1
+                uni.reLaunch({
+                	url: '../main/main',
                 });
             }
         }

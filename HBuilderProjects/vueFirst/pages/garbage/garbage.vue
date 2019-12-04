@@ -27,6 +27,9 @@
 				</view>
 			</view>
 		</view>
+		<view class="image-v">
+			<image src="../../static/img/fd.png"></image>
+		</view>
 	</view>
 </template>
 <script>
@@ -89,6 +92,10 @@
 	}
 </script>
 <style>
+	.image-v{
+		text-align: center;
+		margin-top: 30%;
+	}
 	.title-v h1{
 		height: 1.84rem;
 		margin: 0 auto;
