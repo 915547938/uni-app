@@ -51,7 +51,7 @@
 					</view>
 				</view>
 			</view>
-            <button style="display: none;" type="default" @tap="bindLogout">退出登录</button>
+            <button style="margin-top:80%;" type="default" @tap="bindLogout">退出登录</button>
 		</view>
     </view>
 </template>

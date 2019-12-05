@@ -98,8 +98,10 @@
 
 		},
 		onLoad() {
+			
 			uni.getSystemInfo({ //获取设备信息
 				success: (res) => {
+					console.log(res);
 					this.screenHeight = res.screenHeight;
 					this.platform = res.platform;
 				}
@@ -182,7 +184,9 @@
 			},
 			comment(index) {
 				console.log(111);
-				document.getElementsByTagName('uni-tabbar')[0].style.display = 'none';
+				uni.hideTabBar({
+					
+				});//document.getElementsByTagName('uni-tabbar')[0].style.display = 'none';
 				this.showInput = true; //调起input框
 				this.focus = true;
 				this.index = index;
@@ -209,7 +213,9 @@
 				}).exec();
 			},
 			reply(index, comment_index) {
-				document.getElementsByTagName('uni-tabbar')[0].style.display = 'none';
+				uni.hideTabBar({
+					
+				});
 				this.is_reply = true; //回复中
 				this.showInput = true; //调起input框
 				let replyTo = this.posts[index].comments.comment[comment_index].username;
@@ -219,7 +225,10 @@
 				this.focus = true;
 			},
 			blur: function() {
-				this.init_input();
+				var that=this;
+				setTimeout(function(){
+					that.init_input();
+				}, 100);
 			},
 			send_comment: function(message) {
 				console.log(222);
@@ -238,7 +247,11 @@
 				this.init_input();
 			},
 			init_input() {
-				document.getElementsByTagName('uni-tabbar')[0].style.display = 'block';
+				
+				uni.showTabBar({
+					
+				});
+				//document.getElementsByTagName('uni-tabbar')[0].style.display = 'block';
 				this.showInput = false;
 				this.focus = false;
 				this.input_placeholder = '评论';

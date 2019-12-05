@@ -1,4 +1,8 @@
 
+.image-v{
+	text-align: center;
+	margin-top: 30%;
+}
 .title-v ._h1{
 	height: 1.84rem;
 	margin: 0 auto;

@@ -82,6 +82,7 @@
 		
 		methods: {
 			async publish(){
+				console.log(this.imageList);
 				if (!this.input_content) {
 					uni.showModal({ content: '内容不能为空', showCancel: false, });
 					return;
