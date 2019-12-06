@@ -36,7 +36,7 @@
             }
         },
         methods: {
-            register() {
+            async register() {
                 /**
                  * 客户端对账号信息进行一些必要的校验。
                  * 实际开发中，根据业务需要进行处理，这里仅做示例。
@@ -64,17 +64,23 @@
                 } */
 
                 const data = {
-                    account: this.account,
+                    username: this.account,
                     password: this.password,
-                    email: this.email
+                    //email: this.email
                 }
-                service.addUser(data);
-                uni.showToast({
-                    title: '注册成功'
-                });
-                uni.reLaunch({
-                	url: '../main/main',
-                });
+				var result= await service.request("user/registereasy","POST",data,true,"");
+				console.log(111,result);
+				if(result.code==1){
+					service.addUser(result.data.userinfo);
+					uni.reLaunch({
+						url: '../user/user',
+					});
+				}else{
+					uni.showToast({
+						title: result.msg
+					});
+				}
+                
             }
         }
     }

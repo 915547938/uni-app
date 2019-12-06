@@ -13,8 +13,18 @@ const store = new Vuex.Store({
         userName: ""
     },
     mutations: {
-        login(state, userName) {
-            state.userName = userName|| '新用户';
+        login(state, userInfo) {
+            state.userName = userInfo.username|| '新用户';
+			state.avatar = userInfo.avatar;
+			state.id = userInfo.id;
+			state.nickname = userInfo.nickname;
+			state.mobile = userInfo.mobile;
+			state.score = userInfo.score;
+			state.token = userInfo.token;
+			state.user_id = userInfo.user_id;
+			state.createtime = userInfo.createtime;
+			state.expires_in = userInfo.expires_in;
+			state.expiretime = userInfo.expiretime;
             state.hasLogin = true;
 			/* let userInfo=service.getUsers();
 			if(userInfo.length>0){
