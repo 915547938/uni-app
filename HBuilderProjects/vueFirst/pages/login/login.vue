@@ -168,6 +168,11 @@
 			}
 		},
 		onReady() {
+			var times = (new Date()).getTime();
+			console.log(times);
+			console.log(times.toString().slice(0,10));
+			service.setCache('text','123',111);
+			console.log(service.getCache('text'));
 			this.initPosition();
 			this.initProvider();
 		}

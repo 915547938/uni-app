@@ -20,11 +20,7 @@ const store = new Vuex.Store({
 			state.nickname = userInfo.nickname;
 			state.mobile = userInfo.mobile;
 			state.score = userInfo.score;
-			state.token = userInfo.token;
 			state.user_id = userInfo.user_id;
-			state.createtime = userInfo.createtime;
-			state.expires_in = userInfo.expires_in;
-			state.expiretime = userInfo.expiretime;
             state.hasLogin = true;
 			/* let userInfo=service.getUsers();
 			if(userInfo.length>0){
@@ -33,17 +29,14 @@ const store = new Vuex.Store({
 			} */
         },
 		islogin(state) {
-			let userInfo=service.getUsers();
-			console.log("用户");
-			console.log(userInfo);
-			if(userInfo.length>0){
-				state.userName = userInfo.account || '新用户';
+			let token=service.getCache('token');
+			if(token!=''){
 				state.hasLogin = true;
 			}
 		},
         logout(state) {
 			uni.setStorageSync("USERS_KEY","");
-            state.userName = "";
+			uni.setStorageSync("token","");
             state.hasLogin = false;
         }
     }

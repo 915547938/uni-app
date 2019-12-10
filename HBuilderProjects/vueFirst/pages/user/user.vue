@@ -71,8 +71,6 @@
             ...mapMutations(['logout','islogin']),
 			isLogin(){
 				this.islogin();
-				console.log(this.hasLogin);
-				console.log();
 			},
             bindLogin() {
                 uni.navigateTo({
@@ -98,15 +96,7 @@
         },
 		onLoad (){
 			this.isLogin();
-			
 			let userInfo=service.getUsers();
-			console.log(userInfo);
-			if(userInfo.length>0){
-				console.log(111);
-				console.log(userInfo[0].account);
-			}else{
-				console.log(this.hasLogin);
-			}
 		}
     }
 </script>

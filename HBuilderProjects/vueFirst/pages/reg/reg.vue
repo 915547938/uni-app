@@ -69,8 +69,9 @@
                     //email: this.email
                 }
 				var result= await service.request("user/registereasy","POST",data,true,"");
-				console.log(111,result);
 				if(result.code==1){
+					console.log('注册成功的的token',result.data.userinfo.token);
+					service.setCache('token',result.data.userinfo.token,result.data.userinfo.expiretime);
 					service.addUser(result.data.userinfo);
 					uni.reLaunch({
 						url: '../user/user',

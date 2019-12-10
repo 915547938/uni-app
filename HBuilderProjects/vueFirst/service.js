@@ -4,33 +4,53 @@ const STATE_KEY = 'STATE_KEY';
 const DOMAIN = 'http://fastadmin.com/api/';
 const getUsers = function () {
     let ret = '';
+	let token = getCache('token');
+	if(!token){
+		ret = '';
+		return ret;
+	}
     ret = uni.getStorageSync(USERS_KEY);
     if (!ret) {
-        ret = '[]';
+        ret = '';
+		return ret;
     }
     return JSON.parse(ret);
 }
 
 const addUser = function (userInfo) {
-    let users = getUsers();
-     users.push({
+	//let users = getUsers();
+     let users={
         username: userInfo.username,
-        password: userInfo.password
-    }); 
+		avatar : userInfo.avatar,
+		id : userInfo.id,
+		nickname : userInfo.nickname,
+		mobile : userInfo.mobile,
+		score : userInfo.score,
+    }; 
     uni.setStorageSync(USERS_KEY, JSON.stringify(users));
 }
 
-const setCache = function (key,data){
+const setCache = function (key,data,expire=0){
 	uni.setStorageSync(key,JSON.stringify(data));
+	uni.setStorageSync(key+"_expire",expire);
 }
 
 const getCache = function (key){
 	let ret = '';
-	ret = uni.getStorageSync(key);
-	if (!ret) {
-	    ret = '';
+	var times = (new Date()).getTime();
+	var timestamp=times.toString().slice(0,10)
+	var chace_timestamp=uni.getStorageSync(key+"_expire");
+	if(chace_timestamp==0 || chace_timestamp>timestamp){
+		ret = uni.getStorageSync(key);
+		if (!ret) {
+		    ret = '';
+			return ret;
+		}
+		return JSON.parse(ret);
+	}else{
+		return ret;
 	}
-	return JSON.parse(ret);
+	
 }
 
 const request1 = function (url,method,data,token){
