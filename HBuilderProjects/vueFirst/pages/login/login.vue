@@ -79,12 +79,11 @@
 				 */
 				this.positionTop = uni.getSystemInfoSync().windowHeight - 100;
 			},
-			bindLogin() {
+			async bindLogin() {
 				/**
 				 * 客户端对账号信息进行一些必要的校验。
 				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
 				 */
-				console.log(this.account);
 				if (this.account.length < 5) {
 					uni.showToast({
 						icon: 'none',
@@ -108,16 +107,24 @@
 					account: this.account,
 					password: this.password
 				};
-				const test = {
-					account: "lixka",
-					password: "123456"
-				};
-				const validUser=data.account === test.account && data.password === test.password;
+				let result= await service.request('user/login','POST',data,true,'');
+				if(result.code==1){
+					service.setCache('token',result.data.userinfo.token,result.data.userinfo.expiretime);
+					service.addUser(result.data.userinfo);
+					this.toMain(result.data.userinfo);
+					
+				}else{
+					uni.showToast({
+						icon: 'none',
+						title: result.msg,
+					});
+				}
+				/* const validUser=data.account === result.data.userinfo.nickname && data.password === result.data.userinfo.password;
 				/*const validUser = service.getUsers().some(function(user) {
 					return data.account === user.account && data.password === user.password;
 				}); */
 				
-				if (validUser) {
+				/* if (validUser) {
 					service.addUser(test);
 					this.toMain(this.account);
 				} else {
@@ -125,7 +132,7 @@
 						icon: 'none',
 						title: '用户账号或密码不正确',
 					});
-				}
+				} */ 
 			},
 			oauth(value) {
 				uni.login({
@@ -156,23 +163,19 @@
 				 * 强制登录时使用reLaunch方式跳转过来
 				 * 返回首页也使用reLaunch方式
 				 */
-				console.log(this.forcedLogin);
 				if (this.forcedLogin) {
 					uni.reLaunch({
 						url: '../main/main',
 					});
 				} else {
-					uni.navigateBack();
+					uni.reLaunch({
+						url:'../user/user'
+					});
 				}
 
 			}
 		},
 		onReady() {
-			var times = (new Date()).getTime();
-			console.log(times);
-			console.log(times.toString().slice(0,10));
-			service.setCache('text','123',111);
-			console.log(service.getCache('text'));
 			this.initPosition();
 			this.initProvider();
 		}
