@@ -68,7 +68,7 @@
                     password: this.password,
                     //email: this.email
                 }
-				var result= await service.request("user/registereasy","POST",data,true,"");
+				var result= await service.request("register","POST",data,true,"");
 				if(result.code==1){
 					console.log('注册成功的的token',result.data.userinfo.token);
 					service.setCache('token',result.data.userinfo.token,result.data.userinfo.expiretime);

@@ -1,7 +1,7 @@
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
-const DOMAIN = 'http://fastadmin.com/api/';
+const DOMAIN = 'http://fastadmin.com/';
 const getUsers = function () {
     let ret = '';
 	let token = getCache('token');
@@ -88,6 +88,7 @@ function request (url, method, data, loading,token){
           url:DOMAIN+url,
           method,
           data,
+		  crossDomain: true,
           header: {
               // 数据被编码为名称/值对
               //"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"

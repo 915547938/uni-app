@@ -107,7 +107,7 @@
 					account: this.account,
 					password: this.password
 				};
-				let result= await service.request('user/login','POST',data,true,'');
+				let result= await service.request('login','POST',data,true,'');
 				if(result.code==1){
 					service.setCache('token',result.data.userinfo.token,result.data.userinfo.expiretime);
 					service.addUser(result.data.userinfo);
@@ -176,6 +176,12 @@
 			}
 		},
 		onReady() {
+			var token = service.getCache('token');
+			if(token!=''){
+				uni.reLaunch({
+					url:'../user/user'
+				})
+			}
 			this.initPosition();
 			this.initProvider();
 		}
