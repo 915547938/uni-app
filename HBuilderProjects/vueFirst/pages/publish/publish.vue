@@ -37,7 +37,7 @@
 
 <script>
 	import image from '../../common/image.js';
-	
+	import service from '../../service.js';
 	var sourceType = [
 		['camera'],
 		['album'],
@@ -72,6 +72,7 @@
 			}
 		},
 		onUnload() {
+			
 			this.imageList = [],
 				this.sourceTypeIndex = 2,
 				this.sourceType = ['拍照', '相册', '拍照或相册'],
@@ -82,7 +83,6 @@
 		
 		methods: {
 			async publish(){
-				console.log(this.imageList);
 				if (!this.input_content) {
 					uni.showModal({ content: '内容不能为空', showCancel: false, });
 					return;
@@ -90,43 +90,51 @@
 				
 				uni.showLoading({title:'发布中'});
 				
-				var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
+				//var location = await this.getLocation();//位置信息,可删除,主要想记录一下异步转同步处理
 				var images = [];
+				var r=1;
 				for(var i = 0,len = this.imageList.length; i < len; i++){
-					var image_obj = {name:'image-'+i,uri:this.imageList[i]};
-					images.push(image_obj);
+					var res = await service.uploadfile(this.imageList[i],'file');
+					
+					console.log('res',res);
+					if(res.code==1){
+						images.push(res.data.url);
+					}else{
+						r=0;
+					}
 				}
-				
-				uni.uploadFile({//该上传仅为示例,可根据自己业务修改或封装,注意:统一上传可能会导致服务器压力过大
-					url: 'moment/moments', //仅为示例，非真实的接口地址
-					files:images,//有files时,会忽略filePath和name
-					filePath: '',
-					name: '',
-					formData: {//后台以post方式接收
-						'user_id':'1',//自己系统中的用户id
-						'text': this.input_content,//moment文字部分
-						'longitude':location.longitude,//经度
-						'latitude':location.latitude//纬度
-					},
-					success: (uploadFileRes) => {
-						uni.hideLoading();
+				if(r==0){
+					uni.showToast({
+						icon: 'none',
+						title: res.msg,
+					});
+				}else{
+					var data={
+						content:this.input_content,
+						all_path:images
+					};
+					var token=service.getCache('token');
+					var addres= await service.request("article", "POST", data, true,token);
+					if(addres.code==1){
 						uni.showToast({
 							icon:'success',
 							title:"发布成功"
 						})
-						uni.navigateBack({//可根据实际情况使用其他路由方式
-							delta:1
-						});
-					},
-					fail: (e) => {
-						console.log("e: " + JSON.stringify(e));
-						uni.hideLoading();
+						setTimeout(function (){
+							uni.navigateBack({//可根据实际情况使用其他路由方式
+								delta:1
+							});
+							},"1000");
+						
+						
+					}else{
 						uni.showToast({
-							icon:'none',
-							title:"发布失败,请检查网络"
-						})
+							icon: 'none',
+							title: addres.msg,
+						});
 					}
-				});
+				}
+				
 			},
 			
 			getLocation(){//h5中可能不支持,自己选择
@@ -147,6 +155,7 @@
 			    this.imageList.splice(e,1);
 			},
 			chooseImage: async function() {
+				console.log("是否继续?", 1);
 				if (this.imageList.length === 9) {
 					let isContinue = await this.isFullImg();
 					console.log("是否继续?", isContinue);
@@ -171,7 +180,7 @@
 						// #ifndef APP-PLUS
 						this.imageList = this.imageList.concat(res.tempFilePaths)//非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
 						// #endif
-						
+						console.log(this.imageList);
 					}
 				})
 			},

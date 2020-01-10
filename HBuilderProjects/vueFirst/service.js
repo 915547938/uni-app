@@ -126,10 +126,49 @@ function request (url, method, data, loading,token){
   })
 }
 
+//上传文件
+function uploadfile(filepath,filename){
+	return new Promise((resolve, reject) => {
+		uni.uploadFile({
+			url: DOMAIN+'upload', //仅为示例，非真实的接口地址
+			files:'',//有files时,会忽略filePath和name
+			filePath: filepath,
+			name: filename,
+			formData: {//后台以post方式接收
+				//'user_id':'1',//自己系统中的用户id
+				//'text': this.input_content,//moment文字部分
+				//'longitude':location.longitude,//经度
+				//'latitude':location.latitude//纬度
+			},
+			success: (uploadFileRes) => {
+				uni.hideLoading();
+				resolve(JSON.parse(uploadFileRes.data));
+				//return uploadFileRes;
+				/* uni.showToast({
+					icon:'success',
+					title:"发布成功"
+				})
+				uni.navigateBack({//可根据实际情况使用其他路由方式
+					delta:1
+				}); */
+			},
+			fail: (e) => {
+				console.log("e: " + JSON.stringify(e));
+				uni.hideLoading();
+				uni.showToast({
+					icon:'none',
+					title:"发布失败,请检查网络"
+				})
+			}
+		})
+	})
+}
+
 export default {
     getUsers,
     addUser,
 	setCache,
 	getCache,
-	request
+	request,
+	uploadfile
 }
