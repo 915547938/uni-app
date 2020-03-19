@@ -170,5 +170,6 @@ export default {
 	setCache,
 	getCache,
 	request,
-	uploadfile
+	uploadfile,
+	DOMAIN
 }

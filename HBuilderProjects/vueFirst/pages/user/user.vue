@@ -6,7 +6,7 @@
 		<view class="islogin" v-else>
 			<view class="top-v">
 				<view class="avatar-v">
-					<image :src="userInfo.avatar"></image>
+					<image :src="userInfo.avatar" @tap="chooseImage"></image>
 				</view>
 				<view class="name-v">
 					<text>{{userInfo.nickname}}</text><br>
@@ -97,7 +97,54 @@
 				uni.navigateTo({
 					url: '../publish/publish',
 				});
+			},
+			chooseImage(){
+				var that=this;
+				uni.chooseImage({
+				    count: 1, //默认9
+				    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+				    sourceType: ['album','camera'], //从相册选择
+				    success: function (res) {
+				        console.log(JSON.stringify(res.tempFilePaths));
+						that.upload((res.tempFilePaths[0]))
+						
+				    }
+				});
+				
+			},
+			async upload(path){
+				var res=await service.uploadfile(path,'file');
+				let that=this;
+				if(res.code==1){
+					console.log(222222);
+					var avatarpath=res.data.httpurl;
+					
+					var data={avatar:avatarpath}
+					var token=service.getCache('token');
+					var avaRes=await service.request('profile','POST',data,true,token);
+					if(avaRes.code==1){
+						that.userInfo.avatar=avatarpath;
+						service.addUser(that.userInfo);
+						console.log(avatarpath,that.userInfo);
+						uni.showToast({
+							icon:'success',
+							title:"更换成功"
+						});
+					}else{
+						uni.showToast({
+							icon: 'none',
+							title: avaRes.msg,
+						});
+					}
+				}else{
+					console.log(121212);
+					uni.showToast({
+						icon: 'none',
+						title: res.msg,
+					});
+				}
 			}
+			
         },
 		onLoad (){
 			this.isLogin();
