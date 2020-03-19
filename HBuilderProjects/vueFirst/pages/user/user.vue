@@ -10,7 +10,7 @@
 				</view>
 				<view class="name-v">
 					<text>{{userInfo.nickname}}</text><br>
-					<text class="name-t">发布&nbsp;1&nbsp;&nbsp;&nbsp;关注&nbsp;33&nbsp;&nbsp;&nbsp;粉丝&nbsp;33</text>
+					<text class="name-t">发布&nbsp;{{release}}&nbsp;&nbsp;&nbsp;关注&nbsp;{{focus}}&nbsp;&nbsp;&nbsp;粉丝&nbsp;{{fans}}</text>
 				</view>
 			</view>
 			<view class="realse-v">
@@ -23,7 +23,7 @@
 						<image src="../../static/img/news.png"></image>
 					</view>
 					<view>
-						<text>消息通知</text>
+						<text>消息通知<sup v-if="news>0">{{news}}</sup></text>
 					</view>
 				</view>
 				<view class="news-v">
@@ -66,7 +66,11 @@
     export default {
 		data(){
 			return {
-				userInfo:{}
+				userInfo:{},
+				release:0,
+				focus:0,
+				fans:0,
+				news:0,
 			}
 		},
         computed: {
@@ -112,6 +116,20 @@
 				});
 				
 			},
+			async myinit(){
+				var res=await service.request('myinit','GET','',true,service.getCache('token'));
+				if(res.code==1){
+					this.release=res.data.release;
+					this.focus=res.data.focus;
+					this.fans=res.data.fans;
+					this.news=res.data.news;
+				}else{
+					uni.showToast({
+						icon:'success',
+						title:'网络出错'
+					})
+				}
+			},
 			async upload(path){
 				var res=await service.uploadfile(path,'file');
 				let that=this;
@@ -152,11 +170,19 @@
 			let that=this;
 			that.userInfo=userInfo;
 			console.log(userInfo);
+			this.myinit();
 		}
     }
 </script>
 
 <style>
+	sup{
+		background: red;
+		color: white;
+		border-radius: 5px; /*圆角*/
+		padding: 0px 3px; /*左右边距*/
+		top: -1em; /*数字离图片右上角的高度*/
+	}
 	.other-image-v{
 		height:48rpx;
 	}
