@@ -31,7 +31,7 @@
 				</view>
 				<!-- 赞／评论区 -->
 				<view class="post-footer">
-					<view class="footer_content">
+					<view class="footer_content" v-if="post.islike>0">
 						<image class="liked" src="../../static/index/liked.png"></image>
 						<text class="nickname" v-for="(user,index_like) in post.like" :key="index_like">{{user.username}}</text>
 					</view>
