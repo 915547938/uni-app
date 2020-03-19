@@ -34,11 +34,9 @@
 				"app-plus" : {
 				    "bounce" : "none",
 				    "titleNView" : {
-				        "type" : "transparent",
 				        "buttons" : [
 				            {
 				                "background" : "rgba(255,255,255,0.2)",
-				                "color" : "#696969",
 				                "type" : "none",
 				                "fontSrc" : "/static/fonts/iconfont.ttf",
 				                "text" : "\ue608" //小相机

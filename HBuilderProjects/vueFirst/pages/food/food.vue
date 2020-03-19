@@ -1,12 +1,7 @@
 <template>
 	<view id="moments">
-		<view class="home-pic">
-			<view class="home-pic-base">
-				<view class="top-pic">
-					<image class="header" src="../../static/index/test/header06.jpg" @tap="test"></image>
-				</view>
-				<view class="top-name">Liuxy</view>
-			</view>
+		<view class="home-pic" >
+			
 		</view>
 
 		<view class="moments__post" v-for="(post,index) in posts" :key="index" :id="'post-'+index">
@@ -16,12 +11,13 @@
 
 			<view class="post_right">
 				<text class="post-username">{{post.username}}</text>
-				<view id="paragraph" class="paragraph">{{post.content.text}}</view>
+				<view id="paragraph" class="paragraph" :style="pmwidth">{{post.content.text}}</view>
 				<!-- 相册 -->
 				<view class="thumbnails">
-					<view :class="post.content.images.length === 1?'my-gallery':'thumbnail'" v-for="(image, index_images) in post.content.images" :key="index_images">
-						<image class="gallery_img" lazy-load mode="aspectFill" :src="image" :data-src="image" @tap="previewImage(post.content.images,index_images)"></image>
+					<view v-if="post.content.images.length>1" class="thumbnail" v-for="(image, index_images) in post.content.images" :key="index_images">
+						<image class="gallery_img" lazy-load mode="scaleToFill" :src="image" :data-src="image" @tap="previewImage(post.content.images,index_images)"></image>
 					</view>
+					<image v-if="post.content.images.length===1" class="gallery_img" style="width:80%;height:80%;" lazy-load mode="widthFix" :src="post.content.images[0]"></image>
 				</view>
 				<!-- 资料条 -->
 				<view class="toolbar">
@@ -59,14 +55,14 @@
 <script>
 	import chatInput from '../../components/im-chat/chatinput.vue'; //input框
 	import postData from '../../common/index/index.post.data.js';//朋友圈数据
-	
+	import service from '../../service.js';
 	export default {
 		components: {
 			chatInput
 		},
 		data() {
 			return {
-				posts: postData,//模拟数据
+				posts:[],//模拟数据
 				user_id: 4,
 				username: 'Liuxy',
 
@@ -84,6 +80,9 @@
 				
 				loadMoreText: "加载中...",
 				showLoadMore: false,
+				pmwidth:'width:322px;',
+				page:1
+				
 			}
 		},
 		mounted() {
@@ -104,8 +103,11 @@
 					console.log(res);
 					this.screenHeight = res.screenHeight;
 					this.platform = res.platform;
+					this.pmwidth="width:"+res.windowWidth*0.8+"px;";
 				}
 			});
+			this.page=1;
+			this.posts = [];
 			uni.startPullDownRefresh();
 		},
 		onShow() {
@@ -120,7 +122,12 @@
 					}
 				}
 			});
+			//获取朋友圈数据
+			this.page=1;
+			this.posts = [];
+			this.getFriend(this.page);
 		},
+		
 		onHide() {
 			uni.offWindowResize(); //取消监听窗口尺寸变化
 		},
@@ -135,8 +142,9 @@
 			this.showLoadMore = true;
 			setTimeout(() => {
 				//获取数据
+				this.getFriend(this.page);
 				if (this.posts.length < 20){//测试数据
-					this.posts = this.posts.concat(this.posts);
+					//this.posts = this.posts.concat(this.posts);
 				}else{
 					this.loadMoreText = "暂无更多";
 				}
@@ -161,6 +169,29 @@
 		methods: {
 			test(){
 				this.navigateTo('../test/test');
+			},
+			async getFriend(page){
+				const data = {
+					page: page,
+				};
+				let result= await service.request('friend','GET',data,true,'');
+				if(result.code==1){
+					//console.log(result.data);
+					var friendData=result.data;
+					//console.log(friendData[0].content.images)
+					//this.posts=friendData;
+					this.posts = this.posts.concat(friendData);
+					this.page=this.page+1;
+					if(page>1 && friendData.length==0){
+						//console.log(friendData.length);
+						this.loadMoreText = "暂无更多";
+					}
+				}else{
+					uni.showToast({
+						icon: 'none',
+						title: result.msg,
+					});
+				}
 			},
 			navigateTo(url) {
 				uni.navigateTo({
@@ -279,4 +310,7 @@
 <style scoped>
 	@import '../../common/uni.css';
 	@import url("../../common/index/index.css");
+	.uni-page-head-btn{
+		background-color: transparent !important;
+	}
 </style>

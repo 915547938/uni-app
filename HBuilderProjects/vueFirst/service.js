@@ -1,7 +1,7 @@
 // 管理账号信息
 const USERS_KEY = 'USERS_KEY';
 const STATE_KEY = 'STATE_KEY';
-const DOMAIN = 'http://fastadmin.com/';
+const DOMAIN = 'http://lixkadmin.com/';
 const getUsers = function () {
     let ret = '';
 	let token = getCache('token');
