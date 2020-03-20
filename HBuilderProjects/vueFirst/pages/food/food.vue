@@ -126,6 +126,7 @@
 			this.page=1;
 			this.posts = [];
 			this.getFriend(this.page);
+			this.loadMoreText = "加载更多";
 		},
 		
 		onHide() {
