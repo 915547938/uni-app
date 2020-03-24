@@ -31,7 +31,7 @@
 				</view>
 				<!-- 赞／评论区 -->
 				<view class="post-footer">
-					<view class="footer_content" v-if="post.islike>0">
+					<view class="footer_content" v-if="post.like.length>0">
 						<image class="liked" src="../../static/index/liked.png"></image>
 						<text class="nickname" v-for="(user,index_like) in post.like" :key="index_like">{{user.username}}</text>
 					</view>
@@ -109,6 +109,9 @@
 			this.page=1;
 			this.posts = [];
 			uni.startPullDownRefresh();
+			let userInfo=service.getUsers();
+			this.user_id=userInfo.id;
+			this.username=userInfo.username;
 		},
 		onShow() {
 			uni.onWindowResize((res) => { //监听窗口尺寸变化,窗口尺寸不包括底部导航栏
@@ -199,19 +202,46 @@
 					url: url
 				});
 			},
-			like(index) {
+			async like(index) {
 				if (this.posts[index].islike === 0) {
 					this.posts[index].islike = 1;
-					this.posts[index].like.push({
-						"uid": this.user_id,
-						"username": "," + this.username
-					});
+					if(this.posts[index].like.length>0){
+						this.posts[index].like.push({
+							"uid": this.user_id,
+							"username": "," + this.username
+						});
+					}else{
+						this.posts[index].like.push({
+							"uid": this.user_id,
+							"username": this.username
+						});
+					}
+					console.log(this.posts[index].like);
 				} else {
 					this.posts[index].islike = 0;
-					this.posts[index].like.splice(this.posts[index].like.indexOf({
-						"uid": this.user_id,
-						"username": "," + this.username
-					}), 1);
+					if(this.posts[index].like.length==1){
+						this.posts[index].like.splice(this.posts[index].like.indexOf({
+							"uid": this.user_id,
+							"username": this.username
+						}), 1);
+					}else{
+						this.posts[index].like.splice(this.posts[index].like.indexOf({
+							"uid": this.user_id,
+							"username": "," + this.username
+						}), 1);
+					}
+					
+				}
+				let data={
+					article:this.posts[index].post_id,
+					type:1
+				}
+				let res=await service.request('like','POST',data,true,service.getCache('token'));
+				if(res.code!=1){
+					uni.showToast({
+						icon:'none',
+						title:'网络出错'
+					})
 				}
 			},
 			comment(index) {
