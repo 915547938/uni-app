@@ -23,7 +23,7 @@
 				<view class="toolbar">
 					<view class="timestamp">{{post.timestamp}}</view>
 					<view class="like" @tap="like(index)">
-						<image :src="post.islike===0?'../../static/index/islike.png':'../../static/index/like.png'"></image>
+						<image :src="post.mylike==0?'../../static/index/islike.png':'../../static/index/like.png'" :alt="post.mylike"></image>
 					</view>
 					<view class="comment" @tap="comment(index)">
 						<image src="../../static/index/comment.png"></image>
@@ -178,7 +178,7 @@
 				const data = {
 					page: page,
 				};
-				let result= await service.request('friend','GET',data,true,'');
+				let result= await service.request('friend','GET',data,true,service.getCache('token'));
 				if(result.code==1){
 					//console.log(result.data);
 					var friendData=result.data;
@@ -203,8 +203,8 @@
 				});
 			},
 			async like(index) {
-				if (this.posts[index].islike === 0) {
-					this.posts[index].islike = 1;
+				if (this.posts[index].mylike === 0) {
+					this.posts[index].mylike = 1;
 					if(this.posts[index].like.length>0){
 						this.posts[index].like.push({
 							"uid": this.user_id,
@@ -218,7 +218,7 @@
 					}
 					console.log(this.posts[index].like);
 				} else {
-					this.posts[index].islike = 0;
+					this.posts[index].mylike = 0;
 					if(this.posts[index].like.length==1){
 						this.posts[index].like.splice(this.posts[index].like.indexOf({
 							"uid": this.user_id,

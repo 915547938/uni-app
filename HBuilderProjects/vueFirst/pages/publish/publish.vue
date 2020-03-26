@@ -54,7 +54,7 @@
 				// title: 'choose/previewImage',
 				input_content:'',
 				imageList: [],
-				
+				mylick:[],
 				
 				
 				sourceTypeIndex: 2,
