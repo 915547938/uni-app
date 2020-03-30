@@ -73,8 +73,8 @@
 		display: flex;
 		flex-direction: row;
 		width: 100%;
-		height: 80upx;
-		min-height: 80upx;
+		height: 90upx;
+		min-height: 90upx;
 		border-top: solid 1px #bbb;
 		overflow: hidden;
 		padding: 5upx;

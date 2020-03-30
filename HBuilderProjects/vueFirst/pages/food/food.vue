@@ -36,7 +36,7 @@
 						<text class="nickname" v-for="(user,index_like) in post.like" :key="index_like">{{user.username}}</text>
 					</view>
 					<view class="footer_content" v-for="(comment,comment_index) in post.comments.comment" :key="comment_index" @tap="reply(index,comment_index)">
-						<text class="comment-nickname">{{comment.username}}: <text class="comment-content">{{comment.content}}</text></text>
+						<text class="comment-nickname">{{comment.username}}<text v-if="comment.pid>0">回复{{comment.pname}}</text>: <text class="comment-content">{{comment.content}}</text></text>
 					</view>
 				</view>
 			</view>
@@ -185,6 +185,8 @@
 					//console.log(friendData[0].content.images)
 					//this.posts=friendData;
 					this.posts = this.posts.concat(friendData);
+					console.log(this.posts[0]);
+					//console.log(this.posts[0].comments.comment[0].username);
 					this.page=this.page+1;
 					if(page>1 && friendData.length==0){
 						//console.log(friendData.length);
@@ -293,20 +295,36 @@
 				}, 100);
 			},
 			send_comment: function(message) {
-				console.log(222);
+				console.log(message,'212121',this.is_reply);
+				let isreply=0;
 				if (this.is_reply) {
+					isreply=1;
 					var reply_username = this.posts[this.index].comments.comment[this.comment_index].username;
 					var comment_content = '回复' + reply_username + ':' + message.content;
+					message.pid=this.posts[this.index].comments.comment[this.comment_index].id;
 				} else {
 					var comment_content = message.content;
 				}
+				message.isreply=isreply;
+				message.article=this.posts[this.index].post_id;
+				this.docomment(message);
 				this.posts[this.index].comments.total += 1;
 				this.posts[this.index].comments.comment.push({
 					"uid": this.user_id,
 					"username": this.username,
 					"content": comment_content //直接获取input中的值
 				});
+				message.isreply=isreply;
 				this.init_input();
+			},
+			async docomment(message){
+				let res = await service.request('comment','POST',message,true,service.getCache('token'));
+				if(res.code!=1){
+					uni.showToast({
+						icon:'none',
+						title:res.msg
+					})
+				}
 			},
 			init_input() {
 				
