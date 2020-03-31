@@ -101,6 +101,8 @@
 				})
 			},
 			onInput(e) {
+				console.log(e,'eee');
+				console.log(e.target.value,'123');
 				this.$emit('input', e.target.value)
 			}
 		}

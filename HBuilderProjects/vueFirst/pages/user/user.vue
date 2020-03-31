@@ -170,7 +170,9 @@
 			let that=this;
 			that.userInfo=userInfo;
 			console.log(userInfo);
-			this.myinit();
+			if(that.userInfo){
+				this.myinit();
+			}
 		}
     }
 </script>

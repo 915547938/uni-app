@@ -3,11 +3,11 @@
         <view class="input-group">
             <view class="input-row border">
                 <text class="title">账号：</text>
-                <m-input type="text" focus clearable v-model="account" placeholder="请输入账号"></m-input>
+                <input calss="title" type="text" v-model="account" placeholder="请输入账号">
             </view>
             <view class="input-row border">
                 <text class="title">密码：</text>
-                <m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
+                <input type="password" displayable v-model="password" placeholder="请输入密码"/>
             </view>
             <!-- <view class="input-row">
                 <text class="title">邮箱：</text>
@@ -26,7 +26,7 @@
 
     export default {
         components: {
-            mInput
+            //mInput
         },
         data() {
             return {
@@ -44,7 +44,7 @@
                 if (this.account.length < 5) {
                     uni.showToast({
                         icon: 'none',
-                        title: '账号最短为 51 个字符'
+                        title: '账号最短为 5 个字符'
                     });
                     return;
                 }

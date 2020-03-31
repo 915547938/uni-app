@@ -3,11 +3,12 @@
 		<view class="input-group">
 			<view class="input-row border">
 				<text class="title">账号：</text>
-				<m-input class="m-input" type="text" clearable focus v-model="account" placeholder="请输入账号"></m-input>
+				<!-- <m-input class="m-input" type="text" clearable focus  @input="getvalue" placeholder="请输入账号"></m-input> -->
+				<input calss="title" type="text" v-model="account" placeholder="请输入账号">
 			</view>
 			<view class="input-row">
 				<text class="title">密码：</text>
-				<m-input type="password" displayable v-model="password" placeholder="请输入密码"></m-input>
+				<input type="password" displayable v-model="password" placeholder="请输入密码"/>
 			</view>
 		</view>
 		<view class="btn-row">
@@ -36,7 +37,7 @@
 
 	export default {
 		components: {
-			mInput
+			//mInput
 		},
 		data() {
 			return {
@@ -50,6 +51,10 @@
 		computed: mapState(['forcedLogin']),
 		methods: {
 			...mapMutations(['login']),
+			getvalue(value){
+				//console.log(value,'value');
+				this.account=value;
+			},
 			initProvider() {
 				const filters = ['weixin', 'qq', 'sinaweibo'];
 				uni.getProvider({
@@ -84,14 +89,16 @@
 				 * 客户端对账号信息进行一些必要的校验。
 				 * 实际开发中，根据业务需要进行处理，这里仅做示例。
 				 */
-				if (this.account.length < 5) {
+				var that=this;
+				console.log(that.account.length);
+				if (that.account.length < 5) {
 					uni.showToast({
 						icon: 'none',
-						title: '账号最短为 5 个字符'
+						title: '账号最短为5个字符'
 					});
 					return;
 				}
-				if (this.password.length < 6) {
+				if (that.password.length < 6) {
 					uni.showToast({
 						icon: 'none',
 						title: '密码最短为 6 个字符'
@@ -104,8 +111,8 @@
 				 * 实际开发中，使用 uni.request 将账号信息发送至服务端，客户端在回调函数中获取结果信息。
 				 */
 				const data = {
-					account: this.account,
-					password: this.password
+					account: that.account,
+					password: that.password
 				};
 				let result= await service.request('login','POST',data,true,'');
 				if(result.code==1){
@@ -189,6 +196,19 @@
 </script>
 
 <style>
+	input {
+		height: 26px;
+		line-height: 26px !important;
+		padding: 8px 0;
+	}
+	uni-input {
+		height: 26px;
+		line-height: 26px !important;
+		padding: 8px 0;
+	}
+	.title{
+		line-height: 26px !important;
+	}
 	.action-row {
 		display: flex;
 		flex-direction: row;

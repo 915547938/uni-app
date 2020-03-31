@@ -44,8 +44,7 @@ page {
 	width: 100%;
 	background-color: #0b877f;
 	height: 100rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	padding-top: 15rpx;
 }
 .searchBoxRadius {
@@ -77,13 +76,11 @@ page {
 	width: 100%;
 	margin-top: 30rpx;
 	padding: 15rpx 3%;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .searchHistoryBox {
 	width: 100%;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	overflow: hidden;
 	margin-top: 40rpx;
 }

@@ -14,6 +14,7 @@
 
 <style>
 	/*每个页面公共css */
+	
 	page {
 		min-height: 100%;
 		display: flex;
@@ -49,11 +50,7 @@
 	/* #endif */
 
 	/* 原生组件模式下需要注意组件外部样式 */
-	m-input {
-		width: 100%;
-		min-height: 100%;
-		display: flex;
-	}
+	
 
 	.content {
 		display: flex;
@@ -127,5 +124,15 @@
 
 	button.primary {
 		background-color: #0faeff;
+	}
+	input {
+		height: 26px;
+		line-height: 26px !important;
+		padding: 8px 0;
+	}
+	uni-input {
+		height: 26px;
+		line-height: 26px !important;
+		padding: 8px 0;
 	}
 </style>

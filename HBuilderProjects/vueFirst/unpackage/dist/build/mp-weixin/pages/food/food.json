@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "美食秀",
-  "enablePullDownRefresh": true,
-  "usingComponents": {
-    "chat-input": "/components/im-chat/chatinput"
-  }
-}

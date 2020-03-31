@@ -3,7 +3,7 @@
         <view class="input-group">
             <view class="input-row">
                 <text class="title">邮箱：</text>
-                <m-input type="text" focus clearable v-model="email" placeholder="请输入邮箱"></m-input>
+                <input type="text" focus clearable v-model="email" placeholder="请输入邮箱"/>
             </view>
         </view>
 
@@ -49,5 +49,5 @@
 </script>
 
 <style>
-
+	
 </style>
