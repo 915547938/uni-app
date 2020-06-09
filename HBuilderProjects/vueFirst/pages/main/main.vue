@@ -210,7 +210,6 @@
 		font-family: uniicons;
 		font-weight: normal;
 		font-style: normal;
-		src: url('~@/static/uni.ttf') format('truetype');
 	}
 	
 	/* #endif */
